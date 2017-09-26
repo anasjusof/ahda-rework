@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Requests\LecturerRequest;
 
 use Auth;
+use DB;
 
 use App\LecturerHistory;
 use App\Attachment;
@@ -99,5 +100,26 @@ class LecturerController extends Controller
         $history = LecturerHistory::create($input);
 
         return redirect()->back()->with('message', 'Your booking is successful! Please wait for admin approval!');
+    }
+
+    public function showAvailableBooking(Request $request){
+        echo $request->start_date;
+
+        //Select vehicle that in not in booking range and approval status is rejected
+        $available_bookings = DB::select(DB::raw('SELECT vehicles.* FROM `vehicles` 
+                                                    LEFT JOIN booking_histories
+                                                    ON vehicles.id = booking_histories.car_id
+                                                    WHERE vehicles.id
+                                                    NOT IN 
+                                                    (
+                                                    SELECT booking_histories.car_id FROM booking_histories
+                                                    WHERE
+                                                    booking_histories.start_date > "'.$request->start_date.' 00:00:00"
+                                                    AND 
+                                                    booking_histories.end_date <= "'.$request->end_date.' 23:59:59"
+                                                    AND
+                                                    (booking_histories.approval = 0 OR booking_histories.approval = 1)
+                                                    )'));
+        print_r($available_bookings);
     }
 }

@@ -128,12 +128,12 @@
       </div>
       <div class="modal-body">
       	<div class="table-scrollable table-scrollable-borderless">
-            {!! Form::open(['method'=>'POST', 'action'=>'LecturerController@applyLeave', 'files'=>true]) !!}
+            {!! Form::open(['method'=>'POST', 'action'=>'LecturerController@showAvailableBooking', 'files'=>true]) !!}
 		        
 		        <div class="form-group col-md-12">
 		            <label for="inputPassword1" class="col-md-4 control-label">Departure Date</label>
 		            <div class="col-md-8">
-		                <div class="input-group date date-picker border-grey-navy" data-date-format="mm/dd/yyyy" data-date-start-date="+0d">
+		                <div class="input-group date date-picker border-grey-navy" data-date-format="yyyy-mm-dd" data-date-start-date="+0d">
 		                	<span class="input-group-btn">
 		                        <button class="btn default" type="button">
 		                            <i class="fa fa-calendar"></i>
@@ -147,7 +147,7 @@
 		        <div class="form-group col-md-12">
 		            <label for="inputPassword1" class="col-md-4 control-label">End Date</label>
 		            <div class="col-md-8">
-		                <div class="input-group date date-picker border-grey-navy" data-date-format="mm/dd/yyyy" data-date-start-date="+0d">
+		                <div class="input-group date date-picker border-grey-navy" data-date-format="yyyy-mm-dd" data-date-start-date="+0d">
 		                	<span class="input-group-btn">
 		                        <button class="btn default" type="button">
 		                            <i class="fa fa-calendar"></i>

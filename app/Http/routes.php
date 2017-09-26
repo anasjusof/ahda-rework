@@ -56,5 +56,6 @@ Route::group(['middleware'=>['auth', 'checkRole:2']], function(){
 
 	Route::get('user', ['uses'=>'LecturerController@index'])->name('pensyarah.index');
 	Route::post('user/permohonan', ['uses'=>'LecturerController@applyLeave'])->name('pensyarah.permohonan');
+	Route::post('user/view-available-booking', ['uses'=>'LecturerController@showAvailableBooking'])->name('pensyarah.view-available-booking');
 
 });
