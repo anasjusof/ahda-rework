@@ -5,7 +5,7 @@
 <div class="jumbotron text-center bg-1">
 <h1 style="color:#ffffff">Kuis Transportation Booking System</h1>
 <p style="color:#ffffff">Book KUIS vehicle faster and easier here..</p>
-    <a class="btn btn-primary btn-lg" role="button" href="/check">Book Now</a>
+    <a class="btn btn-primary btn-lg" role="button" href="{{ url('check-availability') }}">Book Now</a>
     <a class="btn btn-primary btn-lg" role="button" href="{{ url('login') }}">Login</a>
     <a class="btn btn-primary btn-lg" role="button" href="{{ route('register') }}">Register</a>
      @if (Auth::guest())

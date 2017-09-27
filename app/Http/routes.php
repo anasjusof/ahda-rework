@@ -34,6 +34,9 @@ Route::post('register', [
 
 Route::get('homepage', ['uses'=>'LecturerController@homepage'])->name('homepage');
 
+Route::get('check-availability', ['uses'=>'LecturerController@checkAvailability'])->name('check-availability');
+Route::post('check', ['uses'=>'LecturerController@check'])->name('check');
+
 Route::get('/home', 'HomeController@index');
 Route::get('loginTemplate', ['uses'=>'AdminController@loginTemplate'])->name('admin.loginTemplate');
 

@@ -20,6 +20,39 @@ class LecturerController extends Controller
         return view('homepage');
     }
 
+    public function checkAvailability(){
+        return view('checkAvailability');
+    }
+
+    public function check(Request $request){
+        $input = $request->all();
+
+        $start_date = strtotime($input['start_date']);
+        $start_date = date('Y-m-d',$start_date);
+
+        $end_date = strtotime($input['end_date']);
+        $end_date = date('Y-m-d',$end_date);
+
+        $available_bookings = DB::select(DB::raw('SELECT vehicles.* FROM `vehicles` 
+                                                    LEFT JOIN booking_histories
+                                                    ON vehicles.id = booking_histories.car_id
+                                                    WHERE vehicles.id
+                                                    NOT IN 
+                                                    (
+                                                        SELECT booking_histories.car_id FROM booking_histories
+                                                        WHERE
+                                                        (
+                                                            booking_histories.start_date <= "'.$start_date.'"
+                                                            AND 
+                                                            booking_histories.end_date >= "'.$end_date.'"
+                                                        )
+                                                        AND
+                                                        (booking_histories.approval = 0 OR booking_histories.approval = 1)
+                                                    )'));
+        
+        return view('check', compact('available_bookings'));
+    }
+
     public function index(){
 
         $histories = booking_history::select('users.name', 'users.email','booking_histories.id as history_id', 'booking_histories.start_date','booking_histories.end_date','booking_histories.created_at', 'booking_histories.approval', 'booking_histories.destination', 'booking_histories.purpose', 'attachments.filepath', 'vehicles.model')
