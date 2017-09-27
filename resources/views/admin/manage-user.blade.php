@@ -43,6 +43,8 @@
 	                            <th> # </th>
 	                            <th> Name </th>
 	                            <th> Email </th>
+	                            <th> Staff / Matrik No. </th>
+	                            <th> Phone </th>
 	                            <th> Role </th>
 	                            <th> Faculty </th>
 	                        </tr>
@@ -56,15 +58,17 @@
 	                            <td>{{$count + $currentPageTotalNumber}}</td>
 	                            <td> {{ $user->name }}</td>
 	                            <td> {{ $user->email }}</td>
-	                            <td> {{ $user->role_name }}</td>
+	                            <td> {{ $user->matrik }}</td>
+	                            <td> {{ $user->phone }}</td>
 	                            <td> 
-	                            	@if($user->faculties_id == 0)
-	                            		-
+	                            @if($user->roles_id == 1)
+	                            		Admin
 	                            	@else
-	                            		{{ $user->faculty_name }}
+	                            		User
 	                            	@endif
 	                            </td>
-	                            <td> <a href="" class="btn blue btn-sm editBtn" data-toggle="modal" data-target="#editModal" data-user_id="{{ $user->id }}" data-username="{{ $user->name }}" data-user_email="{{ $user->email }}" data-roles_id="{{ $user->roles_id }}" data-faculties_id="{{ $user->faculties_id }}">Edit</a>
+	                            <td> {{ $user->faculty }}</td>
+	                            <td> <a href="" class="btn blue btn-sm editBtn" data-toggle="modal" data-target="#editModal" data-user_id="{{ $user->id }}" data-username="{{ $user->name }}" data-user_email="{{ $user->email }}" data-roles_id="{{ $user->roles_id }}" data-faculty="{{ $user->faculty }}" data-phone="{{ $user->phone }}" data-matrik="{{ $user->matrik }}">Edit</a>
 	                        </tr>
 	                        <?php $count++ ?>
 	                        @endforeach
@@ -89,71 +93,6 @@
 	    </div>
 	    <!-- END BORDERED TABLE PORTLET-->
 	</div>
-	
-	<!--
-    <div class="col-md-12">
-    	<!-- BEGIN BORDERED TABLE PORTLET-->
-    	<!--
-	    <div class="portlet box blue-dark">
-	        <div class="portlet-title">
-	            <div class="caption">
-	                <i class=""></i>
-	                <span class="uppercase">Create New User</span>
-	            </div>
-	        </div>
-	        <div class="portlet-body">
-	            <div class="table-scrollable table-scrollable-borderless">
-	                {!! Form::open(['method'=>'POST', 'action'=>'AdminController@createUser']) !!}
-	                	<div class="form-group col-md-12">
-				            <label for="inputPassword1" class="col-md-4 control-label">Name</label>
-				            <div class="col-md-8">
-				                    <input type="text" name="name" class="form-control input-line" id="username" value="{{ old('name') }}">
-				            </div>
-				        </div>
-				        <div class="form-group col-md-12">
-				            <label for="inputPassword1" class="col-md-4 control-label">Email</label>
-				            <div class="col-md-8">
-				                    <input type="email" name="email" class="form-control input-line" id="email" value="{{ old('email') }}">
-				            </div>
-				        </div>
-				        <div class="form-group col-md-12">
-				            <label for="inputPassword1" class="col-md-4 control-label">Password</label>
-				            <div class="col-md-8">
-				            		
-				                    <input type="password" name="password" class="form-control input-line" id="password">
-				            </div>
-				        </div>
-				        <div class="form-group col-md-12">
-				            <label for="inputPassword1" class="col-md-4 control-label">Confirm Password</label>
-				            <div class="col-md-8">
-				                    <input type="password" name="password_confirmation" class="form-control input-line" id="confirm_password">
-				            </div>
-				        </div>
-				        <div class="form-group col-md-12">
-				            <label for="inputPassword1" class="col-md-4 control-label">Roles</label>
-				            <div class="col-md-8">
-				                    {!! Form::select('roles_id', $roles, 0, ['id'=>'roles_select', 'class'=>'form-control']) !!}
-				            </div>
-				        </div>
-				        <div class="form-group col-md-12">
-				            <label for="inputPassword1" class="col-md-4 control-label">Faculty</label>
-				            <div class="col-md-8">
-				                    {!! Form::select('faculties_id', $faculties, 0, ['id'=>'faculty_select', 'class'=>'form-control']) !!}
-				            </div>
-				        </div>
-				        <div class="form-group col-md-12">
-				            <button class="btn btn-transparent blue btn-sm active submitUserBtn"> Submit </button>
-				        </div>
-				    {!! Form::close() !!}
-	            </div>
-	        </div>
-	    </div>
-	    <!-- END BORDERED TABLE PORTLET-->
-	  	<!--
-    </div>
-    
-</div>
--->
 
 <!-- Modal -->
 <div id="editModal" class="modal fade" role="dialog">
@@ -192,16 +131,43 @@
 	                    <input type="password" name="password_confirmation" class="form-control input-line">
 	            </div>
 	        </div>
+
+	        <div class="form-group col-md-12">
+	            <label for="inputPassword1" class="col-md-4 control-label">Staff/matrik number</label>
+	            <div class="col-md-8">
+	                    <input type="text" name="matrik" class="form-control input-line" id="m_matrik">
+	            </div>
+	        </div>
+
+	        <div class="form-group col-md-12">
+	            <label for="inputPassword1" class="col-md-4 control-label">Phone</label>
+	            <div class="col-md-8">
+	                    <input type="text" name="phone" class="form-control input-line" id="m_phone">
+	            </div>
+	        </div>
+
 	        <div class="form-group col-md-12">
 	            <label for="inputPassword1" class="col-md-4 control-label">Roles</label>
 	            <div class="col-md-8">
-	                    {!! Form::select('roles_id', $roles, 0, ['id'=>'m_roles_select', 'class'=>'form-control']) !!}
+	                    <select class="form-control" name="roles_id"  id="m_roles_id">
+                            <option value="2">User</option>
+                            <option value="1">Admin</option>
+                        </select>
 	            </div>
 	        </div>
 	        <div class="form-group col-md-12">
 	            <label for="inputPassword1" class="col-md-4 control-label">Faculty</label>
 	            <div class="col-md-8">
-	                    {!! Form::select('faculties_id', $faculties, 0, ['id'=>'m_faculty_select', 'class'=>'form-control']) !!}
+	                    <select class="form-control" name="faculty" id="m_faculty">
+                            <option value="FSTM">FSTM</option>
+                            <option value="FPM">FPM</option>
+                            <option value="FP">FP</option>
+                            <option value="FSU">FSU</option>
+                            <option value="PA">PA</option>
+                            <option value="FPPI">FPPI</option>
+                            <option value="PPT">PPT</option>
+                            <option value="PPS">PPS</option>
+                        </select>
 	            </div>
 	        </div>
 	        <input type="hidden" name="id" id="m_user_id">
@@ -257,16 +223,42 @@
 		                    <input type="password" name="password_confirmation" class="form-control input-line" id="confirm_password">
 		            </div>
 		        </div>
+			        <div class="form-group col-md-12">
+		            <label for="inputPassword1" class="col-md-4 control-label">Staff/matrik number</label>
+		            <div class="col-md-8">
+		                    <input type="text" name="matrik" class="form-control input-line" id="">
+		            </div>
+		        </div>
+
+		        <div class="form-group col-md-12">
+		            <label for="inputPassword1" class="col-md-4 control-label">Phone</label>
+		            <div class="col-md-8">
+		                    <input type="text" name="phone" class="form-control input-line" id="">
+		            </div>
+		        </div>
+
 		        <div class="form-group col-md-12">
 		            <label for="inputPassword1" class="col-md-4 control-label">Roles</label>
 		            <div class="col-md-8">
-		                    {!! Form::select('roles_id', $roles, 0, ['id'=>'roles_select', 'class'=>'form-control']) !!}
+		                    <select class="form-control" name="roles_id"  id="">
+	                            <option value="2">User</option>
+	                            <option value="1">Admin</option>
+	                        </select>
 		            </div>
 		        </div>
 		        <div class="form-group col-md-12">
 		            <label for="inputPassword1" class="col-md-4 control-label">Faculty</label>
 		            <div class="col-md-8">
-		                    {!! Form::select('faculties_id', $faculties, 0, ['id'=>'faculty_select', 'class'=>'form-control']) !!}
+		                    <select class="form-control" name="faculty" id="">
+	                            <option value="FSTM">FSTM</option>
+	                            <option value="FPM">FPM</option>
+	                            <option value="FP">FP</option>
+	                            <option value="FSU">FSU</option>
+	                            <option value="PA">PA</option>
+	                            <option value="FPPI">FPPI</option>
+	                            <option value="PPT">PPT</option>
+	                            <option value="PPS">PPS</option>
+	                        </select>
 		            </div>
 		        </div>
         </div>
@@ -302,13 +294,22 @@
        $('.editBtn').click(function(){
 
        		var roles_id = $(this).data('roles_id');
-       		var faculties_id = $(this).data('faculties_id');
+       		var faculty = $(this).data('faculty');
+
+       		if(roles_id == 1){
+       			role = 'Admin';
+       		}
+       		else{
+       			role = 'User';
+       		}
 
        		$("#m_user_id").val($(this).data('user_id'));
 		 	$("#m_username").val($(this).data('username'));
 		 	$("#m_email").val($(this).data('user_email'));
-		 	$("#m_roles_select").val(roles_id);
-		 	$("#m_faculty_select").val(faculties_id);
+		 	$("#m_matrik").val($(this).data('matrik'));
+		 	$("#m_phone").val($(this).data('phone'));
+		 	$("#m_faculty").val(faculty);
+		 	$("#m_roles_id").val(roles_id);
        });
 
        //If selected role is admin, then disabled select faculty

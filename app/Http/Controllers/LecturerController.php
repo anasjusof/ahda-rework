@@ -16,10 +16,15 @@ use App\booking_history;
 
 class LecturerController extends Controller
 {
+    public function homepage(){
+        return view('homepage');
+    }
+
     public function index(){
 
-        $histories = booking_history::select('users.name', 'users.email','booking_histories.id as history_id', 'booking_histories.start_date','booking_histories.end_date','booking_histories.created_at', 'booking_histories.approval', 'booking_histories.destination', 'booking_histories.purpose', 'attachments.filepath')
+        $histories = booking_history::select('users.name', 'users.email','booking_histories.id as history_id', 'booking_histories.start_date','booking_histories.end_date','booking_histories.created_at', 'booking_histories.approval', 'booking_histories.destination', 'booking_histories.purpose', 'attachments.filepath', 'vehicles.model')
             ->leftJoin('users', 'booking_histories.user_id', '=', 'users.id')
+            ->join('vehicles', 'vehicles.id', '=', 'booking_histories.car_id')
             ->join('attachments', 'booking_histories.attachment_id', '=', 'attachments.id')
             ->where('users.id', '=', Auth::user()->id);
 
@@ -31,7 +36,7 @@ class LecturerController extends Controller
             'booking_histories.approval'
         ];
 
-        $directory = '/images/';
+        $directory = '/attachment/';
 
         if(request()->has('status')){
 
@@ -62,7 +67,7 @@ class LecturerController extends Controller
 
     }
 
-    public function applyLeave(LecturerRequest $request){
+    public function booking(Request $request){
 
         $input = $request->all();
 
@@ -73,21 +78,21 @@ class LecturerController extends Controller
 
             $name = time() . $file->getClientOriginalName();
 
-            $file->move('images', $name);
+            $file->move('attachment', $name);
 
             $attachment = Attachment::create(['filepath'=>$name]);
 
-            $input['attachments_id'] = $attachment->id;
+            $input['attachment_id'] = $attachment->id;
         }
 
-        $date_to = strtotime($input['date_to']);
-        $date_to = date('Y-m-d',$date_to);
+        $start_date = strtotime($input['start_date']);
+        $start_date = date('Y-m-d',$start_date);
 
-        $date_from = strtotime($input['date_from']);
-        $date_from = date('Y-m-d',$date_from);
-
-        $input['start_date'] = $date_to;
-        $input['end_date'] = $date_from;
+        $end_date = strtotime($input['end_date']);
+        $end_date = date('Y-m-d',$end_date);
+        // print_r($input); exit;
+        $input['start_date'] = $input['start_date'];
+        $input['end_date'] = $input['end_date'];
         $input['user_id'] = Auth::user()->id;
         $input['car_id'] = $input['car_id'];
         $input['destination'] = $input['destination'];
@@ -97,13 +102,15 @@ class LecturerController extends Controller
 
         //Store history info
 
-        $history = LecturerHistory::create($input);
+        $history = booking_history::create($input);
 
-        return redirect()->back()->with('message', 'Your booking is successful! Please wait for admin approval!');
+        return redirect()->route('pensyarah.index')->with('message', 'Your booking is successful! Please wait for admin approval!');
     }
 
     public function showAvailableBooking(Request $request){
-        echo $request->start_date;
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $directory = '/attachment/';
 
         //Select vehicle that in not in booking range and approval status is rejected
         $available_bookings = DB::select(DB::raw('SELECT vehicles.* FROM `vehicles` 
@@ -112,14 +119,18 @@ class LecturerController extends Controller
                                                     WHERE vehicles.id
                                                     NOT IN 
                                                     (
-                                                    SELECT booking_histories.car_id FROM booking_histories
-                                                    WHERE
-                                                    booking_histories.start_date > "'.$request->start_date.' 00:00:00"
-                                                    AND 
-                                                    booking_histories.end_date <= "'.$request->end_date.' 23:59:59"
-                                                    AND
-                                                    (booking_histories.approval = 0 OR booking_histories.approval = 1)
+                                                        SELECT booking_histories.car_id FROM booking_histories
+                                                        WHERE
+                                                        (
+                                                            booking_histories.start_date <= "'.$request->end_date.'"
+                                                            AND 
+                                                            booking_histories.end_date >= "'.$request->start_date.'"
+                                                        )
+                                                        AND
+                                                        (booking_histories.approval = 0 OR booking_histories.approval = 1)
                                                     )'));
-        print_r($available_bookings);
+        //print_r($available_bookings);
+
+        return view('pensyarah.booking', compact('available_bookings', 'directory', 'start_date', 'end_date'));
     }
 }

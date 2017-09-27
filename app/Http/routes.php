@@ -28,6 +28,12 @@ Route::get('/', function () {
 
 Route::auth();
 
+Route::post('register', [
+   'as' => 'register', 'uses' => 'Auth\AuthController@postRegister'
+]);
+
+Route::get('homepage', ['uses'=>'LecturerController@homepage'])->name('homepage');
+
 Route::get('/home', 'HomeController@index');
 Route::get('loginTemplate', ['uses'=>'AdminController@loginTemplate'])->name('admin.loginTemplate');
 
@@ -49,13 +55,16 @@ Route::group(['middleware'=>['auth', 'checkRole:1']], function(){
 	Route::post('admin/create-vehicle', ['uses'=>'AdminController@createVehicle'])->name('admin.create-vehicle');
 	Route::delete('admin/delete-vehicle', ['uses'=>'AdminController@deleteVehicle'])->name('admin.delete-vehicle');
 	Route::patch('admin/edit-vehicle', ['uses'=>'AdminController@editVehicle'])->name('admin.edit-vehicle');
+
+	Route::get('admin/manage-booking', ['uses'=>'AdminController@manageBooking'])->name('admin.manage-booking');
+	Route::post('admin/approve-reject', ['uses'=>'AdminController@approveReject'])->name('admin.approve-reject');
 });
 
 //User
 Route::group(['middleware'=>['auth', 'checkRole:2']], function(){
 
 	Route::get('user', ['uses'=>'LecturerController@index'])->name('pensyarah.index');
-	Route::post('user/permohonan', ['uses'=>'LecturerController@applyLeave'])->name('pensyarah.permohonan');
+	Route::post('user/booking', ['uses'=>'LecturerController@booking'])->name('pensyarah.permohonan');
 	Route::post('user/view-available-booking', ['uses'=>'LecturerController@showAvailableBooking'])->name('pensyarah.view-available-booking');
 
 });

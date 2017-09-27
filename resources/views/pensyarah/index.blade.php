@@ -33,7 +33,6 @@
 	        </div>
 	        <div class="portlet-body">
 	        	<div class="col-md-10 margin-bottom-15px padding-left-0px">
-	        		{!! Form::open(['method'=>'POST', 'action'=>'LecturerController@applyLeave', 'files'=>true]) !!}
 
 	        		<div class="col-md-3 padding-left-0px">
 	        			<select class="form-control input-sm" id="filter_status" name="filter_status" onchange="myFunction()" placeholder="Filter Status">
@@ -45,7 +44,6 @@
 	        			</select>
 	        		</div>
 	        			
-	        		{!! Form::close() !!}
 	        	</div>
 	        	<div class="col-md-2 margin-bottom-15px padding-right-0px">
 	        		<a href="" class="btn btn-sm green-jungle pull-right" id="createButton" data-toggle="modal" data-target="#createModal">Booking</a>
@@ -55,6 +53,7 @@
 	                    <thead>
 	                        <tr class="uppercase">
 	                            <th> # </th>
+	                            <th> Car Model </th>
 	                            <th> Destination </th>
 	                            <th> Purpose </th>
 	                            <th> Departure Date </th>
@@ -71,6 +70,7 @@
 	                        <?php $currentPageTotalNumber = ($histories->currentPage() - 1) * 5; ?>
 	                        <tr>
 	                            <td><b>{{$count + $currentPageTotalNumber}}</b></td>
+	                            <td> {{ $history->model }}</td>
 	                            <td> {{ $history->destination }}</td>
 	                            <td> {{ $history->purpose }}</td>
 	                            <td> {{ $history->start_date }}</td>

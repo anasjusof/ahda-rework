@@ -12,6 +12,7 @@ use App\Faculty;
 use App\User;
 use App\Role;
 use App\vehicle;
+use App\booking_history;
 
 class AdminController extends Controller
 {
@@ -51,26 +52,14 @@ class AdminController extends Controller
     }
 
     public function manageUser(){
-    	$users = User::select('users.*', 'faculties.id as faculties_id', 'roles.id as roles_id', 'roles.name as role_name', 'faculties.name as faculty_name')
-    					->join('roles', 'roles.id', '=', 'users.roles_id')
-    					->leftJoin('faculties', 'faculties.id', '=', 'users.faculties_id')
-                        ->orderBy('id', 'DESC')
-    					->paginate(5);
+    	$users = User::paginate(5);
 
-    	$roles = Role::lists('name', 'id');
-
-    	$faculties = Faculty::lists('name', 'id');
-
-    	return view('admin.manage-user', compact('users', 'roles', 'faculties'));
+    	return view('admin.manage-user', compact('users'));
     }
 
     public function createUser(UserRequest $request){
 
         $input = $request->except('password_confirmation');
-
-        if($input['roles_id'] == 1){
-            $input['faculties_id'] = 0;
-        }
 
         $input['password'] = bcrypt($input['password']);
 
@@ -95,12 +84,16 @@ class AdminController extends Controller
         }
         
         $user->roles_id = $input['roles_id'];
-        $user->faculties_id = $input['faculties_id'];
+        $user->faculty = $input['faculty'];
+        $user->phone = $input['phone'];
+        $user->matrik = $input['matrik'];
 
         $user->save();
 
         return redirect()->back()->with('update_message', 'User info successfully updated!');
     }
+
+    ####################### Vehicles ###########################
 
 	public function deleteVechicle(Request $request){
 
@@ -151,6 +144,69 @@ class AdminController extends Controller
 
         return redirect()->back()->with('delete_message', 'Vehicle successfully deleted!');
 
+    }
+
+    ####################### Booking ###########################
+
+    public function manageBooking(){
+
+        $checkSearch = 0;
+
+        $queries = [];
+
+        $directory = '/attachment/';
+
+        $histories = booking_history::select('users.name', 'users.email','booking_histories.id as history_id', 'booking_histories.start_date','booking_histories.end_date','booking_histories.created_at', 'booking_histories.approval', 'booking_histories.destination', 'booking_histories.purpose', 'attachments.filepath', 'vehicles.model')
+            ->leftJoin('users', 'booking_histories.user_id', '=', 'users.id')
+            ->join('vehicles', 'vehicles.id', '=', 'booking_histories.car_id')
+            ->join('attachments', 'booking_histories.attachment_id', '=', 'attachments.id');
+
+        if(request()->has('status')){
+
+            $histories = $histories->where('booking_histories.approval', '=', request('status'));
+
+            $queries['status'] = request('status');
+
+            $checkSearch++;
+        }
+
+        if($checkSearch == 0){
+
+            $histories = $histories->orderBy('booking_histories.id', 'DESC')
+                                    ->paginate(5);
+
+            return view('admin.manage-booking', compact('histories', 'directory')); 
+        }
+
+        else{
+            $histories = $histories->orderBy('booking_histories.id', 'DESC')
+                                    ->paginate(5)->appends($queries);
+
+            return view('admin.manage-booking', compact('histories', 'directory')); 
+        }
+
+        
+
+    }
+
+    public function approveReject(Request $request){
+        $request->all();
+
+        foreach($request->history as $history){
+
+            $pieces = explode("-", $history);
+            $history_id = $pieces[0];
+            $status = $pieces[1];
+
+            $histories = booking_history::find($history_id);
+
+            $histories->approval = $status;
+
+            $histories->save();
+
+        }
+
+        return redirect()->back();
     }
 
 }

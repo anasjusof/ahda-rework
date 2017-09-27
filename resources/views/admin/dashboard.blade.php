@@ -91,7 +91,19 @@
                 <div class="details">
                     <div class="number">
                         <span data-counter="counterup" data-value="89"></div>
-                    <div class="desc"> Goto Vehicle And Booking</div>
+                    <div class="desc"> Goto Vehicle Management</div>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <a class="dashboard-stat dashboard-stat-v2 yellow" href="{{ route('admin.manage-booking') }}">
+                <div class="visual">
+                    <i class="fa fa-institution"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        <span data-counter="counterup" data-value="89"></div>
+                    <div class="desc"> Goto Booking Management</div>
                 </div>
             </a>
         </div>
