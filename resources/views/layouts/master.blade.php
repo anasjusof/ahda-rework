@@ -268,7 +268,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN FOOTER -->
 <div class="page-footer text-center">
 	<div class="page-footer-inner ">
-		 2017 &copy; Development
+		 2017 &copy; AHDA
 	</div>
 	<div class="scroll-to-top">
 		<i class="icon-arrow-up"></i>

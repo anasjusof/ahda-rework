@@ -34,6 +34,7 @@ class AdminController extends Controller
     	return view('admin.manage-user', compact('users'));
     }
 
+    #UserRequest can be found at app/Http/Requests/UserRequest.php @ custom request validation
     public function createUser(UserRequest $request){
 
         //Get all request except password_confirmation and store into input variable 
