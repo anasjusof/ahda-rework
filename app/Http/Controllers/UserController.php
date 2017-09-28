@@ -5,16 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Http\Requests\LecturerRequest;
+use App\Http\Requests\UserBookingRequest;
 
 use Auth;
 use DB;
 
-use App\LecturerHistory;
 use App\Attachment;
 use App\booking_history;
 
-class LecturerController extends Controller
+class UserController extends Controller
 {
     public function homepage(){
         return view('homepage');
@@ -48,7 +47,8 @@ class LecturerController extends Controller
                                                         )
                                                         AND
                                                         (booking_histories.approval = 0 OR booking_histories.approval = 1)
-                                                    )'));
+                                                    )
+                                                    GROUP BY vehicles.id'));
         
         return view('check', compact('available_bookings'));
     }
@@ -87,7 +87,7 @@ class LecturerController extends Controller
 
             response()->json(array('check'=>$histories));
 
-            return view('pensyarah.index', compact('histories', 'directory'));
+            return view('user.index', compact('histories', 'directory'));
 
         }
         else{
@@ -95,12 +95,12 @@ class LecturerController extends Controller
             $histories = $histories->orderBy('booking_histories.id', 'DESC')
                                     ->paginate(5)->appends($queries);
 
-            return $html = view('pensyarah.index', compact('histories', 'directory'));
+            return $html = view('user.index', compact('histories', 'directory'));
         }
 
     }
 
-    public function booking(Request $request){
+    public function booking(UserBookingRequest $request){
 
         $input = $request->all();
 
@@ -137,7 +137,7 @@ class LecturerController extends Controller
 
         $history = booking_history::create($input);
 
-        return redirect()->route('pensyarah.index')->with('message', 'Your booking is successful! Please wait for admin approval!');
+        return redirect()->route('user.index')->with('message', 'Your booking is successful! Please wait for admin approval!');
     }
 
     public function showAvailableBooking(Request $request){
@@ -161,9 +161,10 @@ class LecturerController extends Controller
                                                         )
                                                         AND
                                                         (booking_histories.approval = 0 OR booking_histories.approval = 1)
-                                                    )'));
+                                                    )
+                                                    GROUP BY vehicles.id'));
         //print_r($available_bookings);
 
-        return view('pensyarah.booking', compact('available_bookings', 'directory', 'start_date', 'end_date'));
+        return view('user.booking', compact('available_bookings', 'directory', 'start_date', 'end_date'));
     }
 }

@@ -59,7 +59,7 @@
 	                            <td> {{ $vehicle->plate }}</td>
 	                            <td> {{ $vehicle->type }}</td>
 	                            <td> 
-	                            	<a href="" class="btn blue btn-sm editBtn" data-toggle="modal" data-target="#editModal" data-vehicle_id="{{ $vehicle->id }}" data-vehicle_model="{{ $vehicle->model }}" data-vehicle_type="{{ $vehicle->type }}" data-plate="{{ $vehicle->plate }}">View Booking History</a>
+	                            	<a href="{{ route('admin.view-vehicle-histories', $vehicle->id ) }}" class="btn blue btn-sm editBtn">View Booking History</a>
 	                            </td>
 	                            <td>
 	                            <a href="" class="btn blue btn-sm editBtn" data-toggle="modal" data-target="#editModal" data-vehicle_id="{{ $vehicle->id }}" data-vehicle_model="{{ $vehicle->model }}" data-vehicle_type="{{ $vehicle->type }}" data-vehicle_plate="{{ $vehicle->plate }}">Edit</a>

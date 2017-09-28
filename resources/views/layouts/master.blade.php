@@ -19,61 +19,61 @@ License: You must have a valid license purchased only from themeforest(the above
 <head>
 <?php date_default_timezone_set("Asia/Kuala_Lumpur"); ?>
 <meta charset="utf-8"/>
-<title>SPKK</title>
+<title>AHDA</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="" name="description"/>
 <meta content="" name="author"/>
 <!-- BEGIN GLOBAL MANDATORY STYLES -->
 <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
-<link href="../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-<link href="../assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
-<link href="../assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-<link href="../assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
-<link href="../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('assets/global/plugins/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('assets/global/plugins/simple-line-icons/simple-line-icons.min.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('assets/global/plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('assets/global/plugins/uniform/css/uniform.default.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css') }}" rel="stylesheet" type="text/css"/>
 <!-- END GLOBAL MANDATORY STYLES -->
 <!-- BEGIN GLOBAL MANDATORY STYLES -->
 <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
-<link href="../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-<link href="../assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
-<link href="../assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-<link href="../assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
-<link href="../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('assets/global/plugins/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('assets/global/plugins/simple-line-icons/simple-line-icons.min.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('assets/global/plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('assets/global/plugins/uniform/css/uniform.default.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css') }}" rel="stylesheet" type="text/css"/>
 <!-- END GLOBAL MANDATORY STYLES -->
 <!-- BEGIN PAGE LEVEL STYLES -->
-<link rel="stylesheet" type="text/css" href="../assets/global/plugins/clockface/css/clockface.css"/>
-<link rel="stylesheet" type="text/css" href="../assets/global/plugins/bootstrap-datepicker/css/datepicker3.css"/>
-<link rel="stylesheet" type="text/css" href="../assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css"/>
-<link rel="stylesheet" type="text/css" href="../assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css"/>
-<link rel="stylesheet" type="text/css" href="../assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css"/>
-<link rel="stylesheet" type="text/css" href="../assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"/>
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/global/plugins/clockface/css/clockface.css') }}"/>
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/global/plugins/bootstrap-datepicker/css/datepicker3.css') }}"/>
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}"/>
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css') }}"/>
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css') }}"/>
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}"/>
 <!-- END PAGE LEVEL STYLES -->
 <!-- BEGIN THEME STYLES -->
-<link href="../assets/global/css/components.css" id="style_components" rel="stylesheet" type="text/css"/>
-<link href="../assets/global/css/plugins.css" rel="stylesheet" type="text/css"/>
-<link href="../assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css"/>
-<link id="style_color" href="../assets/admin/layout/css/themes/grey.css" rel="stylesheet" type="text/css"/>
-<link href="../assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('assets/global/css/components.css') }}" id="style_components" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('assets/global/css/plugins.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('assets/admin/layout/css/layout.css') }}" rel="stylesheet" type="text/css"/>
+<link id="style_color" href="{{ asset('assets/admin/layout/css/themes/grey.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('assets/admin/layout/css/custom.css') }}" rel="stylesheet" type="text/css"/>
 <!-- END THEME STYLES -->
 
 <link rel="shortcut icon" href="/favicon.ico"/>
 
 <!-- Alertrify -->
-<script src="../assets/alertrify/js/alertify.min.js"></script>
+<script src="{{ asset('assets/alertrify/js/alertify.min.js') }}"></script>
 <!-- include the style -->
-<link rel="stylesheet" href="../assets/alertrify/css/alertify.min.css" />
+<link rel="stylesheet" href="{{ asset('assets/alertrify/css/alertify.min.css') }}" />
 <!-- include a theme -->
-<link rel="stylesheet" href="../assets/alertrify/css/themes/default.min.css" />
+<link rel="stylesheet" href="{{ asset('assets/alertrify/css/themes/default.min.css') }}" />
 
 <!-- Sweet Alert -->
-<script src="../assets/sweetalert2/sweetalert2.min.js"></script>
-<link rel="stylesheet" href="../assets/sweetalert2/sweetalert2.min.css">
+<script src="{{ asset('assets/sweetalert2/sweetalert2.min.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('assets/sweetalert2/sweetalert2.min.css') }}">
 
 <!-- Bttn.Surge -->
-<link rel="stylesheet" href="../assets/bttn.surge/bttn.min.css">
+<link rel="stylesheet" href="{{ asset('assets/bttn.surge/bttn.min.css') }}">
 
 <!-- Custom CSS -->
-<link rel="stylesheet" href="../assets/custom-css.css">
+<link rel="stylesheet" href="{{ asset('assets/custom-css.css') }}">
 
 @yield('head')
 </head>
@@ -180,9 +180,14 @@ License: You must have a valid license purchased only from themeforest(the above
 							Users Management</a>
 						</li>
 						<li>
-							<a href="{{ route('admin.manage-faculty') }}">
-							<i class="fa fa-institution"></i>
-							Faculties Management</a>
+							<a href="{{ route('admin.manage-vehicle') }}">
+							<i class="fa fa-car"></i>
+							Vehicle Management</a>
+						</li>
+						<li>
+							<a href="{{ route('admin.manage-booking') }}">
+							<i class="fa fa-list"></i>
+							Booking Management</a>
 						</li>
 					</ul>
 				</li>
@@ -191,7 +196,7 @@ License: You must have a valid license purchased only from themeforest(the above
 				
 				@if(Auth::user()->roles_id == 2)
 				<li>
-					<a href="{{ route('pensyarah.index') }}" class="li-hover">
+					<a href="{{ route('user.index') }}" class="li-hover">
 					<i class="fa fa-calendar hover-icon"></i>
 					<span class="title">Booking History</span>
 					</a>

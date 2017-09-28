@@ -128,7 +128,7 @@
       </div>
       <div class="modal-body">
       	<div class="table-scrollable table-scrollable-borderless">
-            {!! Form::open(['method'=>'POST', 'action'=>'LecturerController@showAvailableBooking', 'files'=>true]) !!}
+            {!! Form::open(['method'=>'POST', 'action'=>'UserController@showAvailableBooking', 'files'=>true]) !!}
 		        
 		        <div class="form-group col-md-12">
 		            <label for="inputPassword1" class="col-md-4 control-label">Departure Date</label>

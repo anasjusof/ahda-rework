@@ -38,7 +38,7 @@
 					    <hr>	
 			        </div>
 
-		        	{!! Form::open(['method'=>'POST', 'action'=>'LecturerController@booking', 'files'=>true]) !!}
+		        	{!! Form::open(['method'=>'POST', 'action'=>'UserController@booking', 'files'=>true]) !!}
 
 		        		<div class="form-group col-md-12">
 					      <label for="name">Name:</label>
@@ -61,7 +61,7 @@
 
 					    <div class="form-group col-md-12">
 					      <label for="name">Destination address:</label>
-					      <textarea name="destination" class="form-control"></textarea>
+					      <textarea name="destination" class="form-control" required></textarea>
 					    </div>
 
 					    <div class="form-group col-md-12">

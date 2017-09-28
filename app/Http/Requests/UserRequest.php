@@ -29,6 +29,10 @@ class UserRequest extends Request
                 'name'=>'required',
                 'email'=>'required|email|unique:users',
                 'password'=>'required|confirmed',
+                'matrik'=>'required',
+                'phone'=>'required',
+                'roles_id'=>'required',
+                'faculty'=>'required',
             ];
         }
 
@@ -36,6 +40,10 @@ class UserRequest extends Request
         {
             return [
                 'name'=>'required',
+                'matrik'=>'required',
+                'phone'=>'required',
+                'roles_id'=>'required',
+                'faculty'=>'required',
             ];
         }
     }

@@ -24,11 +24,11 @@
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <a class="dashboard-stat dashboard-stat-v2 blue" href="#">
                 <div class="visual">
-                    <i class="fa fa-group"></i>
+                    <i class="fa fa-car"></i>
                 </div>
                 <div class="details">
                     <div class="number">
-                        <span data-counter="counterup" data-value="">{{ count($admin) }}</span>
+                        <span data-counter="counterup" data-value="">{{ count($vehicles) }}</span>
                     </div>
                     <div class="desc"> Total Vehicle </div>
                 </div>
@@ -37,11 +37,11 @@
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <a class="dashboard-stat dashboard-stat-v2 green" href="#">
                 <div class="visual">
-                    <i class="fa fa-user"></i>
+                    <i class="fa fa-check"></i>
                 </div>
                 <div class="details">
                     <div class="number">
-                        <span data-counter="counterup" data-value="">{{ count($dekan) }}</span></div>
+                        <span data-counter="counterup" data-value="">{{ count($approved) }}</span></div>
                     <div class="desc"> Approved Booking </div>
                 </div>
             </a>
@@ -49,11 +49,11 @@
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <a class="dashboard-stat dashboard-stat-v2 red" href="#">
                 <div class="visual">
-                    <i class="fa fa-user"></i>
+                    <i class="fa fa-close"></i>
                 </div>
                 <div class="details">
                     <div class="number">
-                        <span data-counter="counterup" data-value="">{{ count($ketuajabatan) }}</span>
+                        <span data-counter="counterup" data-value="">{{ count($rejected) }}</span>
                     </div>
                     <div class="desc"> Rejected Booking </div>
                 </div>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="details">
                     <div class="number">
-                        <span data-counter="counterup" data-value="">{{ count($pensyarah) }}</span></div>
+                        <span data-counter="counterup" data-value="">{{ count($pending) }}</span></div>
                     <div class="desc"> Pending Booking </div>
                 </div>
             </a>
@@ -86,7 +86,7 @@
          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <a class="dashboard-stat dashboard-stat-v2 green-jungle" href="{{ route('admin.manage-vehicle') }}">
                 <div class="visual">
-                    <i class="fa fa-institution"></i>
+                    <i class="fa fa-car"></i>
                 </div>
                 <div class="details">
                     <div class="number">
@@ -98,7 +98,7 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <a class="dashboard-stat dashboard-stat-v2 yellow" href="{{ route('admin.manage-booking') }}">
                 <div class="visual">
-                    <i class="fa fa-institution"></i>
+                    <i class="fa fa-list"></i>
                 </div>
                 <div class="details">
                     <div class="number">

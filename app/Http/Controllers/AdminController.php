@@ -6,11 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Requests\UserRequest;
-use App\Http\Requests\FacultyRequest;
 
-use App\Faculty;
 use App\User;
-use App\Role;
 use App\vehicle;
 use App\booking_history;
 
@@ -18,38 +15,15 @@ class AdminController extends Controller
 {
     public function index(){
 
-        $admin = User::where('roles_id', '=', 1)->get();
-        $dekan = User::where('roles_id', '=', 2)->get();
-        $ketuajabatan = User::where('roles_id', '=', 3)->get();
-        $pensyarah = User::where('roles_id', '=', 4)->get();
+        $vehicles = vehicle::all();
+        $approved = booking_history::where('approval', '=', '1')->get();
+        $rejected = booking_history::where('approval', '=', '2')->get();
+        $pending = booking_history::where('approval', '=', '0')->get();
 
-        return view('admin.dashboard', compact('admin', 'dekan', 'ketuajabatan', 'pensyarah'));
-    }
-    
-    public function manageFaculty(){
-
-    	$faculties = Faculty::paginate(5);
-
-    	return view('admin.manage-faculty', compact('faculties'));
+        return view('admin.dashboard', compact('vehicles', 'approved', 'rejected', 'pending'));
     }
 
-    public function createFaculty(FacultyRequest $request){
-    	$input = $request->all();
-
-    	Faculty::create($input);
-
-    	return redirect()->back()->with('create_message', 'Faculty successfully created!');
-    }
-
-    public function deleteFaculty(Request $request){
-    	$faculties = Faculty::findOrFail($request->faculty_id);
-
-    	foreach($faculties as $faculty){
-    		$faculty->delete();
-    	}
-
-    	return redirect()->back()->with('delete_message', 'Faculty successfully deleted!');
-    }
+    ####################### User ###########################
 
     public function manageUser(){
     	$users = User::paginate(5);
@@ -146,6 +120,25 @@ class AdminController extends Controller
 
     }
 
+    public function viewVehicleHistories($vehicle_id){
+
+        $directory = '/attachment/';
+
+        $vehicle = vehicle::find($vehicle_id);
+
+        $histories = booking_history::select('users.name', 'users.email','booking_histories.id as history_id', 'booking_histories.start_date','booking_histories.end_date','booking_histories.created_at', 'booking_histories.approval', 'booking_histories.destination', 'booking_histories.purpose', 'attachments.filepath', 'vehicles.model')
+            ->leftJoin('users', 'booking_histories.user_id', '=', 'users.id')
+            ->join('vehicles', 'vehicles.id', '=', 'booking_histories.car_id')
+            ->join('attachments', 'booking_histories.attachment_id', '=', 'attachments.id');
+
+        $histories = $histories->where('booking_histories.car_id', $vehicle_id)
+                                ->orderBy('booking_histories.id', 'DESC')
+                                ->paginate(5);
+
+        return view('admin.view-vehicle-history', compact('histories', 'directory', 'vehicle')); 
+        
+    }
+
     ####################### Booking ###########################
 
     public function manageBooking(){
@@ -156,7 +149,7 @@ class AdminController extends Controller
 
         $directory = '/attachment/';
 
-        $histories = booking_history::select('users.name', 'users.email','booking_histories.id as history_id', 'booking_histories.start_date','booking_histories.end_date','booking_histories.created_at', 'booking_histories.approval', 'booking_histories.destination', 'booking_histories.purpose', 'attachments.filepath', 'vehicles.model')
+        $histories = booking_history::select('users.name', 'users.email', 'users.matrik', 'users.phone', 'users.faculty', 'booking_histories.id as history_id', 'booking_histories.start_date','booking_histories.end_date','booking_histories.created_at', 'booking_histories.approval', 'booking_histories.destination', 'booking_histories.purpose', 'attachments.filepath', 'vehicles.model', 'vehicles.plate', 'vehicles.type')
             ->leftJoin('users', 'booking_histories.user_id', '=', 'users.id')
             ->join('vehicles', 'vehicles.id', '=', 'booking_histories.car_id')
             ->join('attachments', 'booking_histories.attachment_id', '=', 'attachments.id');
@@ -184,9 +177,6 @@ class AdminController extends Controller
 
             return view('admin.manage-booking', compact('histories', 'directory')); 
         }
-
-        
-
     }
 
     public function approveReject(Request $request){

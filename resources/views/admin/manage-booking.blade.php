@@ -78,8 +78,18 @@
 	                        <?php $currentPageTotalNumber = ($histories->currentPage() - 1) * 5; ?>
 	                        <tr>
 	                        	<td><b>{{$count + $currentPageTotalNumber}}</b></td>
-	                        	<td> {{ $history->name }}</td>
-	                            <td> {{ $history->model }}</td>
+	                        	<td>
+	                        		<a href="" class="showUser" data-toggle="modal" data-target="#userModal" data-username="{{ $history->name }}" data-user_email="{{ $history->email }}" data-faculty="{{ $history->faculty }}" data-phone="{{ $history->phone }}" data-matrik="{{ $history->matrik }}"> 
+	                        		<i class="fa fa-list"></i>
+	                        		{{ $history->name }}
+	                        		</a>
+	                        	</td>
+	                            <td>
+	                            	<a href="" class="showVehicle" data-toggle="modal" data-target="#vehicleModal" data-vehicle_model="{{ $history->model }}" data-vehicle_type="{{ $history->type }}" data-vehicle_plate="{{ $history->plate }}"> 
+	                            	<i class="fa fa-list"></i>
+	                            	{{ $history->model }}
+	                            	</a>
+	                            </td>
 	                            <td> {{ $history->destination }}</td>
 	                            <td> {{ $history->purpose }}</td>
 	                            <td> {{ $history->start_date }}</td>
@@ -146,6 +156,113 @@
 
     
 </div>
+
+<!-- Modal -->
+<div id="userModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">User Info</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="row">
+      		<div class="form-group col-md-12">
+	            <label for="inputPassword1" class="col-md-4 control-label">Name</label>
+	            <div class="col-md-8">
+	                    <input type="text" name="name" class="form-control input-line" id="m_username" disabled>
+	            </div>
+	        </div>
+	        <div class="form-group col-md-12">
+	            <label for="inputPassword1" class="col-md-4 control-label">Email</label>
+	            <div class="col-md-8">
+	                    <input type="email" name="email" class="form-control input-line" id="m_email" disabled>
+	            </div>
+	        </div>
+	        <div class="form-group col-md-12">
+	            <label for="inputPassword1" class="col-md-4 control-label">Staff/matrik number</label>
+	            <div class="col-md-8">
+	                    <input type="text" name="matrik" class="form-control input-line" id="m_matrik" disabled>
+	            </div>
+	        </div>
+
+	        <div class="form-group col-md-12">
+	            <label for="inputPassword1" class="col-md-4 control-label">Phone</label>
+	            <div class="col-md-8">
+	                    <input type="text" name="phone" class="form-control input-line" id="m_phone" disabled>
+	            </div>
+	        </div>
+
+	        <div class="form-group col-md-12">
+	            <label for="inputPassword1" class="col-md-4 control-label">Faculty</label>
+	            <div class="col-md-8">
+	                    <select class="form-control" name="faculty" id="m_faculty" disabled>
+                            <option value="FSTM">FSTM</option>
+                            <option value="FPM">FPM</option>
+                            <option value="FP">FP</option>
+                            <option value="FSU">FSU</option>
+                            <option value="PA">PA</option>
+                            <option value="FPPI">FPPI</option>
+                            <option value="PPT">PPT</option>
+                            <option value="PPS">PPS</option>
+                        </select>
+	            </div>
+	        </div>
+	  	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- End Modal -->
+
+<!-- Modal -->
+<div id="vehicleModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Vehicle Info</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="row">
+
+      		<div class="form-group col-md-12">
+	            <label for="inputPassword1" class="col-md-4 control-label">Model</label>
+	            <div class="col-md-8">
+	                    <input type="text" name="model" class="form-control input-line" id="m_vehicle_model" disabled>
+	            </div>
+	        </div>
+	        <div class="form-group col-md-12">
+	            <label for="inputPassword1" class="col-md-4 control-label">Plate</label>
+	            <div class="col-md-8">
+	                    <input type="text" name="plate" class="form-control input-line" id="m_vehicle_plate" disabled>
+	            </div>
+	        </div>
+	        <div class="form-group col-md-12">
+	            <label for="inputPassword1" class="col-md-4 control-label">Type</label>
+	            <div class="col-md-8">
+	                    <input type="text" name="type" class="form-control input-line" id="m_vehicle_type" disabled>
+	            </div>
+	        </div>
+	    
+	  	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- End Modal -->
 @stop
 
 @section('script')
@@ -176,6 +293,25 @@
                 $('.checker').find('span').removeClass('checked');
                 $("input.single-checkbox").prop('checked', false);
             }
+       });
+
+        $('.showUser').click(function(){
+       		var faculty = $(this).data('faculty');
+
+       		$("#m_user_id").val($(this).data('user_id'));
+		 	$("#m_username").val($(this).data('username'));
+		 	$("#m_email").val($(this).data('user_email'));
+		 	$("#m_matrik").val($(this).data('matrik'));
+		 	$("#m_phone").val($(this).data('phone'));
+		 	$("#m_faculty").val(faculty);
+
+       });
+
+       $('.showVehicle').click(function(){
+
+		 	$("#m_vehicle_model").val($(this).data('vehicle_model'));
+		 	$("#m_vehicle_plate").val($(this).data('vehicle_plate'));
+		 	$("#m_vehicle_type").val($(this).data('vehicle_type'));
        });
     });
 

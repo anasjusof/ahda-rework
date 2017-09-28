@@ -5,7 +5,7 @@
 @stop
 
 @section('title')
-    Permohonan Perlepasan
+    Vehicle Booking History
 @stop
 
 @section('breadcrumb')
@@ -15,7 +15,7 @@
         <i class="fa fa-angle-right"></i>
     </li>
     <li>
-        <a href="#">Histori Permohonan Perlepasan</a>
+        <a href="#">Vehicle Booking History</a>
     </li>
 @stop
 
@@ -27,36 +27,25 @@
 	        <div class="portlet-title">
 	            <div class="caption">
 	                <i class="icon-calendar font-white"></i>
-	                <span class="caption-subject font-white sbold uppercase">Histori Perlepasan Pensyarah</span>
+	                <span class="caption-subject font-white sbold uppercase">Vehicle Booking History : {{ $vehicle->model }}</span>
 	            </div>
 	        </div>
 	        <div class="portlet-body">
-	        	<div class="col-md-12 margin-bottom-15px padding-left-0px">
-		        	<div class="col-md-3 padding-left-0px">
-	        			<select class="form-control input-sm" id="filter_status" name="filter_status" onchange="myFunction()">
-	        				<option value=""></option>
-	        				<option value="">Kesemua</option>
-	        				<option value="0">Dalam proses</option>
-	        				<option value="1">Lulus</option>
-	        				<option value="2">Tidak diterima</option>
-	        			</select>
-	        		</div>	
-	        	</div>
 
 	            <div class="table-scrollable table-bordered table-hover">
 	                <table class="table table-hover table-light">
 	                    <thead>
 	                        <tr class="uppercase">
 	                            <th> # </th>
-	                            <th> Nama Pensyarah </th>
-	                            <th> Email </th>
-	                            <th> Sebab </th>
-	                            <th> Tarikh Keluar </th>
-	                            <th> Tarikh Pulang </th>
-	                            <th> Fail </th>
-	                            <!-- <th> Tarikh Permohonan </th> -->
+	                            <th> User Name </th>
+	                            <th> Car Model </th>
+	                            <th> Destination </th>
+	                            <th> Purpose </th>
+	                            <th> Departure Date </th>
+	                            <th> Return Date </th>
+	                            <th> File </th>
+	                            <th> Booking Date </th>
 	                            <th> Status </th>
-	                            <th></th>
 	                        </tr>
 	                    </thead>
 	                    <tbody id="tbody">
@@ -76,44 +65,35 @@
 	                        @foreach($histories as $history)
 	                        <?php $currentPageTotalNumber = ($histories->currentPage() - 1) * 5; ?>
 	                        <tr>
-	                        	<td>{{$count + $currentPageTotalNumber}}</td>
-	                        	<td> {{ $history->name }} </td>
-	                        	<td> {{ $history->email }} </td>
-	                            <td> {{ $history->reason }}</td>
-	                            <td> {{ $history->date_from }}</td>
-	                            <td> {{ $history->date_to }}</td>
+	                        	<td><b>{{$count + $currentPageTotalNumber}}</b></td>
+	                        	<td> {{ $history->name }}</td>
+	                            <td> {{ $history->model }}</td>
+	                            <td> {{ $history->destination }}</td>
+	                            <td> {{ $history->purpose }}</td>
+	                            <td> {{ $history->start_date }}</td>
+	                            <td> {{ $history->end_date }}</td>
 	                            <td>
 		                            <a class="btn btn-transparent grey-mint btn-sm active" href="{{ $directory.$history->filepath }}" download>
 		                            	Download
 		                            </a>
 	                            </td>
-	                            <!-- <td> {{ $history->created_at }}</td> -->
+	                            <td> {{ $history->created_at }}</td>
 	                            <td>
 	                                <span 
 	                                	class="label min-width-100px
-	                                	@if ($history->approval_status == 0){{ 'label-default' }}
-	                                	@elseif ($history->approval_status == 1){{ 'label-success' }}
+	                                	@if( $history->approval == 2) {{ 'label-danger' }}
+	                                	@elseif ($history->approval == 0){{ 'label-default' }}
+	                                	@elseif ($history->approval == 1){{ 'label-success' }}
 	                                	@else {{ 'label-danger' }}
 	                                	@endif">
 
-	                                	@if ($history->approval_status == 0){{ 'Dalam Proses' }}
-	                                	@elseif ($history->approval_status == 1){{ 'Diluluskan' }}
-	                                	@else {{ 'Tidak diterima' }}
+	                                	@if( $history->approval == 2) {{ 'Rejected' }}
+	                                	@elseif ($history->approval == 0){{ 'Pending' }}
+	                                	@elseif ($history->approval == 1){{ 'Approved' }}
+	                                	@else {{ 'Rejected' }}
 	                                	@endif
 
 	                                </span>
-	                            </td>
-	                            <td>
-	                            	<div class="icheck-list">
-										<label class="mt-radio mt-radio-outline">
-                                            <input type="radio" value="{{ $history->history_id }}-1" name="history[{{ $history->history_id }}]" form="form_update_status"> Lulus
-                                            <span></span>
-                                        </label>
-                                        <label class="mt-radio mt-radio-outline">
-                                            <input type="radio" value="{{ $history->history_id }}-2" name="history[{{ $history->history_id }}]" form="form_update_status"> Tolak
-                                            <span></span>
-                                        </label>
-									</div>
 	                            </td>
 	                        </tr>
 	                        <?php $count++ ?>
@@ -130,12 +110,7 @@
         		{{$histories->render()}}
         	</div>
         	<div class="col-md-6">
-        		<div class="pull-right">
-        			
-        			{!! Form::open(['method'=>'POST', 'action'=>['DeansController@approveReject'], 'id'=>'form_update_status']) !!}
-        			<button class="btn btn-sm green updateBtn">Update Status</button>
-        		{!! Form::close() !!}
-        		</div>
+        	
         	</div>
         </div>
 	</div>
@@ -154,7 +129,12 @@
 
 <script>
 	function myFunction() {
-		window.location.href = '/dekan?status=' + $( "#filter_status" ).val();
+		if($('#filter_status').val() == ''){
+			window.location.href = '/admin/manage-booking';
+		}
+		else{
+			window.location.href = '/admin/manage-booking/?status=' + $( "#filter_status" ).val();
+		}
 	}
 
 	$(document).ready(function(){
