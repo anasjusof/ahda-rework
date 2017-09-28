@@ -23,6 +23,7 @@ class UserBookingRequest extends Request
      */
     public function rules()
     {
+        //If method is post, validate this field
         if($this->method() == 'POST')
         {
             return [
@@ -35,6 +36,7 @@ class UserBookingRequest extends Request
         }
     }
 
+    #This function is to create custom message for validation
     public function messages(){
 
         return [
@@ -46,6 +48,7 @@ class UserBookingRequest extends Request
         ];
     }
 
+    #Redirect to index with error if validation fail
     public function response(array $errors){
         return \Redirect::route('user.index')->withErrors($errors)->withInput();
     }

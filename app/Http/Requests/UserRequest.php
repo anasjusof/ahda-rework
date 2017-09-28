@@ -23,6 +23,7 @@ class UserRequest extends Request
      */
     public function rules()
     {
+        //If method is post, validate this field
         if($this->method() == 'POST')
         {
             return [
@@ -36,6 +37,7 @@ class UserRequest extends Request
             ];
         }
 
+        //If method is update @ PUT / PATCH, validate this field
         if($this->method() == 'PUT' || $this->method() == 'PATCH')
         {
             return [

@@ -46,10 +46,6 @@ Route::get('loginTemplate', ['uses'=>'AdminController@loginTemplate'])->name('ad
 Route::group(['middleware'=>['auth', 'checkRole:1']], function(){
 	Route::get('admin/', ['uses'=>'AdminController@index'])->name('admin.index');
 
-	Route::get('admin/manage-faculty', ['uses'=>'AdminController@manageFaculty'])->name('admin.manage-faculty');
-	Route::post('admin/create-faculty', ['uses'=>'AdminController@createFaculty'])->name('admin.create-faculty');
-	Route::delete('admin/delete-faculty', ['uses'=>'AdminController@deleteFaculty'])->name('admin.delete-faculty');
-
 	Route::get('admin/manage-user', ['uses'=>'AdminController@manageUser'])->name('admin.manage-user');
 	Route::post('admin/create-user', ['uses'=>'AdminController@createUser'])->name('admin.create-user');
 	Route::delete('admin/delete-user', ['uses'=>'AdminController@deleteUser'])->name('admin.delete-user');
