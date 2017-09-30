@@ -11,6 +11,8 @@ use App\User;
 use App\vehicle;
 use App\booking_history;
 
+use DB;
+
 class AdminController extends Controller
 {
     public function index(){
@@ -199,9 +201,9 @@ class AdminController extends Controller
         $directory = '/attachment/';
 
         //Get all booking histories info
-        $histories = booking_history::select('users.name', 'users.email', 'users.matrik', 'users.phone', 'users.faculty', 'booking_histories.id as history_id', 'booking_histories.start_date','booking_histories.end_date','booking_histories.created_at', 'booking_histories.approval', 'booking_histories.destination', 'booking_histories.purpose', 'attachments.filepath', 'vehicles.model', 'vehicles.plate', 'vehicles.type')
+        $histories = booking_history::select('users.name', 'users.email', 'users.matrik', 'users.phone', 'users.faculty', 'booking_histories.id as history_id', 'booking_histories.start_date','booking_histories.end_date','booking_histories.remarks','booking_histories.created_at', 'booking_histories.approval', 'booking_histories.total_passenger', 'booking_histories.destination', 'booking_histories.purpose', 'attachments.filepath', 'vehicles.model', 'vehicles.plate', 'vehicles.type')
             ->leftJoin('users', 'booking_histories.user_id', '=', 'users.id')
-            ->join('vehicles', 'vehicles.id', '=', 'booking_histories.car_id')
+            ->leftJoin('vehicles', 'vehicles.id', '=', 'booking_histories.car_id')
             ->join('attachments', 'booking_histories.attachment_id', '=', 'attachments.id');
 
         //If request has status @ filter
@@ -237,29 +239,106 @@ class AdminController extends Controller
         $request->all();
 
         //Foreach request history selected
-        foreach($request->history as $history){
+        // foreach($request->history as $history){
 
-            //Explode the string of request history
-            $pieces = explode("-", $history);
+        //     //Explode the string of request history
+        //     $pieces = explode("-", $history);
 
-            //first array is history id
-            $history_id = $pieces[0];
+        //     //first array is history id
+        //     $history_id = $pieces[0];
 
-            //second array is history status
-            $status = $pieces[1];
+        //     //second array is history status
+        //     $status = $pieces[1];
 
-            //Find history based on history_id
-            $histories = booking_history::find($history_id);
+        //     //Find history based on history_id
+        //     $histories = booking_history::find($history_id);
 
-            //Update the approval status based on request status
-            $histories->approval = $status;
+        //     //Update the approval status based on request status
+        //     $histories->approval = $status;
 
-            //Save
+        //     //Save
+        //     $histories->save();
+
+        // }
+
+        $histories = booking_history::find($request->booking_history_id);
+
+        if($request->approveReject == 'Approve'){
+            $histories['approval'] = 1;
+            $histories['car_id'] = $request->car_id;
+            $histories['remarks'] = $request->remarks;
+
             $histories->save();
 
         }
+        else{
+            $histories['approval'] = 2;
+            $histories['car_id'] = 0;
+            $histories['remarks'] = $request->remarks;
 
-        return redirect()->back();
+            $histories->save();
+        }
+
+        return redirect()->route('admin.manage-booking')->with('message', 'Booking updated!');
+    }
+
+    public function approveRejectConfirmation($booking_id){
+
+        //Get all booking histories info
+        $histories = booking_history::select('users.name', 'users.email', 'users.matrik', 'users.phone', 'users.faculty', 'booking_histories.id as history_id', 'booking_histories.start_date','booking_histories.end_date','booking_histories.remarks','booking_histories.created_at', 'booking_histories.approval', 'booking_histories.total_passenger', 'booking_histories.destination', 'booking_histories.purpose', 'attachments.filepath', 'vehicles.model', 'vehicles.plate', 'vehicles.type')
+            ->leftJoin('users', 'booking_histories.user_id', '=', 'users.id')
+            ->leftJoin('vehicles', 'vehicles.id', '=', 'booking_histories.car_id')
+            ->join('attachments', 'booking_histories.attachment_id', '=', 'attachments.id')
+            ->where('booking_histories.id', '=', $booking_id)
+            ->first();
+
+
+        //Get start date and end date
+        $start_date = $histories->start_date;
+        $end_date = $histories->end_date;
+
+        //Directory of attachment @ thisprojecttitle/public/attachment/
+        $directory = '/attachment/';
+
+        #Query to join two table, vehicles and booking history
+        #Select only vehicle that NOT IN booked date AND approval is 0[Pending] and 1[Approved] P.S / You cant booked vehicle that already in pending and approved status, but only on rejected status
+        $available_bookings = DB::select(DB::raw("SELECT vehicles.* FROM `vehicles` 
+                                                    LEFT JOIN booking_histories
+                                                    ON vehicles.id = booking_histories.car_id
+                                                    WHERE vehicles.id
+                                                    NOT IN 
+                                                    (
+                                                        SELECT booking_histories.car_id FROM booking_histories
+                                                        WHERE
+                                                        (
+                                                            booking_histories.start_date <= '$start_date'
+                                                            AND 
+                                                            booking_histories.end_date >= '$end_date'
+                                                        )
+                                                        AND
+                                                        (booking_histories.approval = 0 OR booking_histories.approval = 1)
+                                                    )
+                                                    GROUP BY vehicles.id"));
+
+        $not_available_car_objs = DB::select(DB::raw("SELECT booking_histories.car_id FROM booking_histories
+                                                        WHERE
+                                                        (
+                                                            booking_histories.start_date <= '$start_date'
+                                                            AND 
+                                                            booking_histories.end_date >= '$end_date'
+                                                        )
+                                                        AND
+                                                        (booking_histories.approval = 0 OR booking_histories.approval = 1)"));
+
+        $not_available_car = array();
+
+        foreach ($not_available_car_objs as $not_available_car_obj) {
+            $not_available_car[] = $not_available_car_obj->car_id;
+        }
+
+        $available_bookings = vehicle::whereNotIn('id', $not_available_car)->get();
+
+        return view('admin.approve_reject_confirmation', compact('available_bookings', 'directory', 'start_date', 'end_date', 'histories'));
     }
 
 }

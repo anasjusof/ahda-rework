@@ -58,6 +58,7 @@ Route::group(['middleware'=>['auth', 'checkRole:1']], function(){
 	Route::get('admin/view-vehicle-histories/{id}', ['uses'=>'AdminController@viewVehicleHistories'])->name('admin.view-vehicle-histories');
 
 	Route::get('admin/manage-booking', ['uses'=>'AdminController@manageBooking'])->name('admin.manage-booking');
+	Route::get('admin/approve-reject-confirmation/{booking_id}', ['uses'=>'AdminController@approveRejectConfirmation'])->name('admin.approve-reject-confirmation');
 	Route::post('admin/approve-reject', ['uses'=>'AdminController@approveReject'])->name('admin.approve-reject');
 });
 

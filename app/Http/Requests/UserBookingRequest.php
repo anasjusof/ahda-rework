@@ -31,7 +31,6 @@ class UserBookingRequest extends Request
                 'start_date'=>'required',
                 'end_date'=>'required',
                 'attachment'=>'required',
-                'car_id' =>'required'
             ];
         }
     }
@@ -44,7 +43,6 @@ class UserBookingRequest extends Request
             'start_date.required'=>'Please select start date',
             'end_date.required'=>'Please select end date',
             'attachment.required'=>'Please upload relevant attachment',
-            'car_id.required'=>'Please select vehicle to be booked',
         ];
     }
 

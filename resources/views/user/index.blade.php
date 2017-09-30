@@ -58,9 +58,10 @@
 	                            <th> Purpose </th>
 	                            <th> Departure Date </th>
 	                            <th> Return Date </th>
-	                            <th> File </th>
 	                            <th> Booking Date </th>
+	                            <th> File </th>
 	                            <th> Status </th>
+	                            <th> Remarks </th>
 	                        </tr>
 	                    </thead>
 	                    <tbody>
@@ -75,12 +76,12 @@
 	                            <td> {{ $history->purpose }}</td>
 	                            <td> {{ $history->start_date }}</td>
 	                            <td> {{ $history->end_date }}</td>
+	                            <td> {{ $history->created_at }}</td>
 	                            <td>
 		                            <a class="btn btn-transparent grey-mint btn-sm active" href="{{ $directory.$history->filepath }}" download>
 		                            	Download
 		                            </a>
 	                            </td>
-	                            <td> {{ $history->created_at }}</td>
 	                            <td>
 	                                <span 
 	                                	class="label min-width-100px
@@ -97,6 +98,12 @@
 	                                	@endif
 
 	                                </span>
+	                            </td>
+	                            <td>
+	                            	<a href="" class="showRemarks" data-toggle="modal" data-target="#remarksModal" data-remarks="{{ $history->remarks }}"> 
+	                            	<i class="fa fa-list"></i>
+	                            	View Remarks
+	                            	</a>
 	                            </td>
 	                        </tr>
 	                        <?php $count++ ?>
@@ -139,7 +146,7 @@
 		                            <i class="fa fa-calendar"></i>
 		                        </button>
 		                    </span>
-		                    <input type="text" class="form-control" readonly="" name="start_date" value="{{ old('start_date') }}">
+		                    <input type="text" class="form-control" readonly="" name="start_date" value="" required=""  id="s_date">
 		                </div>
 		            </div>
 		        </div>
@@ -153,7 +160,7 @@
 		                            <i class="fa fa-calendar"></i>
 		                        </button>
 		                    </span>
-		                    <input type="text" class="form-control" readonly="" name="end_date" value="{{ old('end_date') }}">
+		                    <input type="text" class="form-control" readonly="" name="end_date" value="" required="" id="e_date">
 		                    
 		                </div>
 		            </div>
@@ -161,7 +168,7 @@
         </div>
       </div>
       <div class="modal-footer">
-      	<button class="btn btn-transparent blue btn-sm active submitUserBtn"> Submit </button>
+      	<button class="btn btn-transparent blue btn-sm active submitDate"> Submit </button>
         <button type="button" class="btn btn-sm btn-warning" data-dismiss="modal">Close</button>
        {!! Form::close() !!}
       </div>
@@ -170,6 +177,34 @@
   </div>
 </div>
 <!-- End modal -->
+
+<!-- Modal -->
+<div id="remarksModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Remarks / Message</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="row">
+
+      		<div class="form-group col-md-12">
+		      <textarea id="m_remarks" class="form-control" readonly=""></textarea>
+		    </div>
+	    
+	  	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- End Modal -->
 @stop
 
 @section('script')
@@ -185,6 +220,31 @@
 			window.location.href = '/user?status=' + $( "#filter_status" ).val();
 		}
 	}
+
+	$(document).ready(function(){
+       $('.showRemarks').click(function(){
+		 	$("textarea#m_remarks").val($(this).data('remarks'));
+       });
+
+       	$(".submitDate").click(function(event){
+		    var isValid = true;
+
+		    if($('#e_date').val() == '' || $('#s_date').val() == '')
+			{	
+			 $('#createModal').modal('toggle'); 
+			 swal(
+			  '',
+			  "Please select date!",
+			  'error'
+			)
+			 isValid = false;
+			}
+
+		    if (!isValid) {
+		        event.preventDefault();
+		    }
+		});
+    });
 </script>
 
 @if(Session::has('message'))

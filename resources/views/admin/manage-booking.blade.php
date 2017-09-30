@@ -52,12 +52,14 @@
 	                            <th> Car Model </th>
 	                            <th> Destination </th>
 	                            <th> Purpose </th>
+	                            <th> Passenger </th>
 	                            <th> Departure Date </th>
 	                            <th> Return Date </th>
-	                            <th> File </th>
 	                            <th> Booking Date </th>
-	                            <th> Status </th>
+	                            <th> File </th>
 	                            <th></th>
+	                            <th> Status </th>
+	                            <th> Remarks </th>
 	                        </tr>
 	                    </thead>
 	                    <tbody id="tbody">
@@ -92,14 +94,18 @@
 	                            </td>
 	                            <td> {{ $history->destination }}</td>
 	                            <td> {{ $history->purpose }}</td>
+	                            <td class="text-center"> {{ $history->total_passenger }}</td>
 	                            <td> {{ $history->start_date }}</td>
 	                            <td> {{ $history->end_date }}</td>
+	                            <td> {{ $history->created_at }}</td>
 	                            <td>
 		                            <a class="btn btn-transparent grey-mint btn-sm active" href="{{ $directory.$history->filepath }}" download>
 		                            	Download
 		                            </a>
 	                            </td>
-	                            <td> {{ $history->created_at }}</td>
+	                            <td>
+	                            	<a href="{{ route('admin.approve-reject-confirmation', $history->history_id ) }}" class="btn blue btn-sm editBtn">Approve | Reject</a>
+	                            </td>
 	                            <td>
 	                                <span 
 	                                	class="label min-width-100px
@@ -118,16 +124,10 @@
 	                                </span>
 	                            </td>
 	                            <td>
-	                            	<div class="icheck-list">
-										<label class="mt-radio mt-radio-outline">
-                                            <input type="radio" value="{{ $history->history_id }}-1" name="history[{{ $history->history_id }}]" form="form_update_status"> Approve
-                                            <span></span>
-                                        </label>
-                                        <label class="mt-radio mt-radio-outline">
-                                            <input type="radio" value="{{ $history->history_id }}-2" name="history[{{ $history->history_id }}]" form="form_update_status"> Reject
-                                            <span></span>
-                                        </label>
-									</div>
+	                            	<a href="" class="showRemarks" data-toggle="modal" data-target="#remarksModal" data-remarks="{{ $history->remarks }}"> 
+	                            	<i class="fa fa-list"></i>
+	                            	View Remarks
+	                            	</a>
 	                            </td>
 	                        </tr>
 	                        <?php $count++ ?>
@@ -144,12 +144,6 @@
         		{{$histories->render()}}
         	</div>
         	<div class="col-md-6">
-        		<div class="pull-right">
-        			
-        			{!! Form::open(['method'=>'POST', 'action'=>['AdminController@approveReject'], 'id'=>'form_update_status']) !!}
-        			<button class="btn btn-sm green updateBtn">Update Status</button>
-        		{!! Form::close() !!}
-        		</div>
         	</div>
         </div>
 	</div>
@@ -263,6 +257,34 @@
   </div>
 </div>
 <!-- End Modal -->
+
+<!-- Modal -->
+<div id="remarksModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Remarks / Message</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="row">
+
+      		<div class="form-group col-md-12">
+		      <textarea id="m_remarks" class="form-control" readonly=""></textarea>
+		    </div>
+	    
+	  	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- End Modal -->
 @stop
 
 @section('script')
@@ -313,10 +335,23 @@
 		 	$("#m_vehicle_plate").val($(this).data('vehicle_plate'));
 		 	$("#m_vehicle_type").val($(this).data('vehicle_type'));
        });
+
+       $('.showRemarks').click(function(){
+		 	$("textarea#m_remarks").val($(this).data('remarks'));
+       });
     });
 
 </script>
 
+@if(Session::has('message'))
+    <script>
+    	swal(
+		  '',
+		  "{{Session::get('message')}}",
+		  'success'
+		)
+    </script>
+@endif
 
 @include('errors.validation-errors')
 @include('errors.validation-errors-script')
