@@ -53,9 +53,9 @@ class UserController extends Controller
                                                         SELECT booking_histories.car_id FROM booking_histories
                                                         WHERE
                                                         (
-                                                            booking_histories.start_date <= '$start_date'
-                                                            AND 
-                                                            booking_histories.end_date >= '$end_date'
+                                                            (booking_histories.start_date <= '$start_date' AND booking_histories.end_date >= '$start_date') OR 
+                                                            (booking_histories.start_date <= '$end_date' AND booking_histories.end_date >= '$end_date') OR 
+                                                            (booking_histories.start_date >= '$start_date' AND booking_histories.end_date <= '$end_date')
                                                         )
                                                         AND
                                                         (booking_histories.approval = 0 OR booking_histories.approval = 1)

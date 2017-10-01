@@ -302,30 +302,13 @@ class AdminController extends Controller
 
         #Query to join two table, vehicles and booking history
         #Select only vehicle that NOT IN booked date AND approval is 0[Pending] and 1[Approved] P.S / You cant booked vehicle that already in pending and approved status, but only on rejected status
-        $available_bookings = DB::select(DB::raw("SELECT vehicles.* FROM `vehicles` 
-                                                    LEFT JOIN booking_histories
-                                                    ON vehicles.id = booking_histories.car_id
-                                                    WHERE vehicles.id
-                                                    NOT IN 
-                                                    (
-                                                        SELECT booking_histories.car_id FROM booking_histories
-                                                        WHERE
-                                                        (
-                                                            booking_histories.start_date <= '$start_date'
-                                                            AND 
-                                                            booking_histories.end_date >= '$end_date'
-                                                        )
-                                                        AND
-                                                        (booking_histories.approval = 0 OR booking_histories.approval = 1)
-                                                    )
-                                                    GROUP BY vehicles.id"));
 
         $not_available_car_objs = DB::select(DB::raw("SELECT booking_histories.car_id FROM booking_histories
                                                         WHERE
                                                         (
-                                                            booking_histories.start_date <= '$start_date'
-                                                            AND 
-                                                            booking_histories.end_date >= '$end_date'
+                                                            (booking_histories.start_date <= '$start_date' AND booking_histories.end_date >= '$start_date') OR 
+                                                            (booking_histories.start_date <= '$end_date' AND booking_histories.end_date >= '$end_date') OR 
+                                                            (booking_histories.start_date >= '$start_date' AND booking_histories.end_date <= '$end_date')
                                                         )
                                                         AND
                                                         (booking_histories.approval = 0 OR booking_histories.approval = 1)"));
