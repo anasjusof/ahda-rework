@@ -15,6 +15,11 @@ use App\booking_history;
 
 class UserController extends Controller
 {
+    #This function is to return the /test
+    public function test(){
+        return view('test');
+    }
+
     #This function is to return the /homepage
     public function homepage(){
         return view('homepage');

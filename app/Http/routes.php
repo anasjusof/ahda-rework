@@ -41,6 +41,9 @@ Route::post('check', ['uses'=>'UserController@check'])->name('check');
 Route::get('/home', 'HomeController@index');
 Route::get('loginTemplate', ['uses'=>'AdminController@loginTemplate'])->name('admin.loginTemplate');
 
+Route::get('test', [
+   'as' => 'test', 'uses' => 'UserController@test'
+]);
 
 //Admin
 Route::group(['middleware'=>['auth', 'checkRole:1']], function(){

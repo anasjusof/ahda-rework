@@ -55,7 +55,7 @@ class AuthController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
-            'matrik' => 'required|min:6',
+            'matrik' => 'required',
             'phone' => 'required|min:6',
             'faculty' => 'required',
         ]);

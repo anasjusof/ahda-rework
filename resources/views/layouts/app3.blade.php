@@ -39,7 +39,20 @@
   <link href="../../assets/frontend/onepage/css/style-responsive.css" rel="stylesheet">
   <link href="../../assets/frontend/onepage/css/themes/red.css" rel="stylesheet" id="style-color">
   <link href="../../assets/frontend/onepage/css/custom.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/global/plugins/clockface/css/clockface.css') }}"/>
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/global/plugins/bootstrap-datepicker/css/datepicker3.css') }}"/>
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}"/>
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css') }}"/>
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css') }}"/>
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}"/>
   <!-- Theme styles END -->
+
+  <style type="text/css">
+    .datepicker.dropdown-menu {
+      z-index: 10000 !important;
+    }
+  </style>
 </head>
 <!--DOC: menu-always-on-top class to the body element to set menu on top -->
 <body>
@@ -56,10 +69,10 @@
         <!-- Navigation BEGIN -->
         <div class="col-md-10 pull-right">
           <ul class="header-navigation">
-            <li class="current"><a href="#promo-block">Home</a></li>
-            <li><a href="#contact">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li><a href="{{ url('check-availability') }}">Check Booking Availability</a></li>
+            <li><a href="{{ url('homepage') }}">Home</a></li>
+            <li><a href="{{ url('homepage') }}">About</a></li>
+            <li><a href="{{ url('homepage') }}">Contact</a></li>
+            <li class="current"><a href="{{ url('check-availability') }}">Check Booking Availability</a></li>
             <li><a href="{{ url('login') }}">Login</a></li>
             <li><a href="{{ route('register') }}">Register</a></li>
           </ul>
@@ -145,28 +158,13 @@
   <!-- Promo block END -->
   
   <!-- BEGIN PRE-FOOTER -->
-  <div class="pre-footer" id="contact">
+  <div class="pre-footer" id="check-date">
     <div class="container">
       <div class="row">
-        <!-- BEGIN BOTTOM ABOUT BLOCK -->
-        <div class="col-md-6 col-sm-6 pre-footer-col">
-          <h2>About us</h2>
-          <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam sit nonummy nibh euismod tincidunt ut laoreet dolore magna aliquarm erat sit volutpat. Nostrud exerci tation ullamcorper suscipit lobortis nisl aliquip  commodo consequat. </p>
-          <p>Duis autem vel eum iriure dolor vulputate velit esse molestie at dolore.</p>
-        </div>
-        <!-- END BOTTOM ABOUT BLOCK -->
-        <div class="col-md-6 col-sm-6 pre-footer-col">
-          <!-- BEGIN BOTTOM CONTACTS -->
-          <h2>Our Contacts</h2>
-          <address class="margin-bottom-20">
-            35, Lorem Lis Street, Park Ave<br>
-            California, US<br>
-            Phone: 300 323 3456<br>
-            Fax: 300 323 1456<br>
-          </address>
-          <!-- END BOTTOM CONTACTS -->
-        </div>
+        @yield('content')
+      
       </div>
+      <!-- END BOTTOM ABOUT BLOCK -->
     </div>
   </div>
   <!-- END PRE-FOOTER -->
@@ -221,9 +219,44 @@
   <!-- Core plugins END (required only for current page) -->
   <!-- Global js BEGIN -->
   <script src="../../assets/frontend/onepage/scripts/layout.js" type="text/javascript"></script>
+
+<script src="/../assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+<script src="/../assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/../assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+<script src="/../assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+<script src="/../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+<script src="/../assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+<script src="/../assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+<script src="/../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="/../assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="/../assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+<script type="text/javascript" src="/../assets/global/plugins/clockface/js/clockface.js"></script>
+<script type="text/javascript" src="/../assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+<script type="text/javascript" src="/../assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script type="text/javascript" src="/../assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+<script type="text/javascript" src="/../assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+
+<script src="/../assets/global/scripts/metronic.js" type="text/javascript"></script>
+<script src="/../assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+<script src="/../assets/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
+<script src="/../assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+<script src="/../assets/admin/pages/scripts/components-pickers.js"></script>
+
   <script>
     $(document).ready(function() {
-      Layout.init();
+          Metronic.init(); // init metronic core components
+          Layout.init(); // init current layout
+          QuickSidebar.init(); // init quick sidebar
+          Demo.init(); // init demo features
+          ComponentsPickers.init();
+    });
+
+    $(document).ready(function () {
+        // Handler for .ready() called.
+        $('html, body').animate({
+            scrollTop: $('#check-date').offset().top
+        }, 'slow');
     });
   </script>
   <!-- Global js END -->

@@ -53,7 +53,7 @@ License: You must have a valid license purchased only from themeforest(the above
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
-<body class="login" style="background: #3399ff !important">
+<body class="login">
 <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
 <div class="menu-toggler sidebar-toggler">
 </div>
@@ -86,11 +86,11 @@ License: You must have a valid license purchased only from themeforest(the above
             <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="password"/>
         </div>
         <div class="form-actions text-center">
-            <a href="{{ url('homepage') }}" class="btn btn-success uppercase " style="min-width: 100px; background: #FF404E;">Home</a>
+            <a href="{{ url('homepage') }}" class="btn btn-success uppercase " style="min-width: 100px; background: #F25C05;">Home</a>
             <button type="submit" class="btn btn-success uppercase "  style="min-width: 100px">Login</button>
-            <a href="{{ route('register') }}" class="btn btn-success uppercase "  style="min-width: 100px; background: #F15C25;">Register</button></a>
+            <a href="{{ route('register') }}" class="btn btn-success uppercase "  style="min-width: 100px; background: #3071a9;">Register</button></a>
         </div>
-        <div class="create-account" style="background: #23D7C8">
+        <div class="create-account" style="background: #3071a9">
             <p style="color:white;">
                 2017 © AHDA
                 <a> </a>
