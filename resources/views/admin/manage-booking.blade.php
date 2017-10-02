@@ -102,6 +102,9 @@
 		                            <a class="btn btn-transparent grey-mint btn-sm active" href="{{ $directory.$history->filepath }}" download>
 		                            	Download
 		                            </a>
+		                            <a class="btn btn-transparent yellow btn-sm active" href="{{ route('admin.print', $history->attachment_id ) }}" target="_blank">
+		                            	Print
+		                            </a>
 	                            </td>
 	                            <td>
 	                            	<a href="{{ route('admin.approve-reject-confirmation', $history->history_id ) }}" class="btn blue btn-sm editBtn">Approve | Reject</a>

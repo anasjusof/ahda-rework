@@ -10,8 +10,11 @@ use App\Http\Requests\UserRequest;
 use App\User;
 use App\vehicle;
 use App\booking_history;
+use App\Attachment;
 
 use DB;
+use ZipArchive;
+use DOMDocument;
 
 class AdminController extends Controller
 {
@@ -201,7 +204,7 @@ class AdminController extends Controller
         $directory = '/attachment/';
 
         //Get all booking histories info
-        $histories = booking_history::select('users.name', 'users.email', 'users.matrik', 'users.phone', 'users.faculty', 'booking_histories.id as history_id', 'booking_histories.start_date','booking_histories.end_date','booking_histories.remarks','booking_histories.created_at', 'booking_histories.approval', 'booking_histories.total_passenger', 'booking_histories.destination', 'booking_histories.purpose', 'attachments.filepath', 'vehicles.model', 'vehicles.plate', 'vehicles.type')
+        $histories = booking_history::select('users.name', 'users.email', 'users.matrik', 'users.phone', 'users.faculty', 'booking_histories.id as history_id', 'booking_histories.start_date','booking_histories.end_date','booking_histories.remarks','booking_histories.created_at', 'booking_histories.approval', 'booking_histories.total_passenger', 'booking_histories.destination', 'booking_histories.purpose', 'attachments.filepath', 'attachments.id as attachment_id', 'vehicles.model', 'vehicles.plate', 'vehicles.type')
             ->leftJoin('users', 'booking_histories.user_id', '=', 'users.id')
             ->leftJoin('vehicles', 'vehicles.id', '=', 'booking_histories.car_id')
             ->join('attachments', 'booking_histories.attachment_id', '=', 'attachments.id');
@@ -322,6 +325,44 @@ class AdminController extends Controller
         $available_bookings = vehicle::whereNotIn('id', $not_available_car)->get();
 
         return view('admin.approve_reject_confirmation', compact('available_bookings', 'directory', 'start_date', 'end_date', 'histories'));
+    }
+
+    public function printDoc($attachment_id){
+
+            $directory = '/attachment/';
+            $attachment = Attachment::where('id', $attachment_id)->first();
+            $filePath = $_SERVER['DOCUMENT_ROOT'] . $directory . $attachment->filepath; 
+            // //FUNCTION :: read a docx file and return the string
+            //     // Create new ZIP archive
+            //     $zip = new ZipArchive;
+            //     $dataFile = 'word/document.xml';
+            //     // Open received archive file
+            //     if (true === $zip->open($filePath)) {
+            //         // If done, search for the data file in the archive
+            //         if (($index = $zip->locateName($dataFile)) !== false) {
+            //             // If found, read it to the string
+            //             $data = $zip->getFromIndex($index);
+            //             // Close archive file
+            //             $zip->close();
+            //             // Load XML from a string
+            //             // Skip errors and warnings
+            //             $xml = new DOMDocument();
+            //             $xml->loadXML($data, LIBXML_NOENT | LIBXML_XINCLUDE | LIBXML_NOERROR | LIBXML_NOWARNING);
+            //             // Return data without XML formatting tags
+
+            //             $contents = explode('\n',strip_tags($xml->saveXML()));
+            //             $text = '';
+            //             foreach($contents as $i=>$content) {
+            //                 $text .= $contents[$i];
+            //             }
+            //             return $text;
+            //         }
+            //         $zip->close();
+            //     }
+            //     // In case of failure return empty string
+            //     return "";
+
+            echo exec('"C:/Program Files/Microsoft Office/Office16/WINWORD.EXE" '.$filePath.' /q /n /mFilePrintDefault /mFileExit'); exit();
     }
 
 }
